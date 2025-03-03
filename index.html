@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting System - REC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        .vote-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background: #ff4081;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .vote-btn:hover {
+            background: #f50057;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            background: white;
+            color: black;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .hidden {
+            display: none;
+        }
+        #winner-banner {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            background: gold;
+            padding: 10px;
+            border-radius: 5px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rajalakshmi Engineering College Voting System</h1>
+        <div id="candidates">
+            <button class="vote-btn" onclick="vote('Vignesh R')">Vignesh R</button>
+            <button class="vote-btn" onclick="vote('Bharath V')">Bharath V</button>
+            <button class="vote-btn" onclick="vote('Balaji G')">Balaji G</button>
+            <button class="vote-btn" onclick="vote('Harini S')">Harini S</button>
+            <button class="vote-btn" onclick="vote('Venkat')">Venkat</button>
+        </div>
+        
+        <div id="admin-login">
+            <h2>Admin Login</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button class="vote-btn" onclick="adminLogin()">Login</button>
+        </div>
+        
+        <div id="vote-results" class="hidden">
+            <h2>Vote Count</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Votes</th>
+                    </tr>
+                </thead>
+                <tbody id="results-table">
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="winner-banner" class="hidden">
+            🎉 Winner: <span id="winner-name"></span> 🎉
+        </div>
+    </div>
+    <script>
+        let votes = { "Vignesh R": 0, "Bharath V": 0, "Balaji G": 0, "Harini S": 0, "Venkat": 0 };
+        let totalVotes = 0;
+        const adminUsername = "Balaji";
+        const adminPassword = "Balu@123";
+
+        function vote(candidate) {
+            votes[candidate]++;
+            totalVotes++;
+            updateResults();
+            checkWinner();
+        }
+
+        function updateResults() {
+            let resultsTable = document.getElementById("results-table");
+            resultsTable.innerHTML = "";
+            for (let candidate in votes) {
+                let row = `<tr><td>${candidate}</td><td>${votes[candidate]}</td></tr>`;
+                resultsTable.innerHTML += row;
+            }
+        }
+
+        function checkWinner() {
+            if (totalVotes % 20 === 0) {
+                let winner = Object.keys(votes).reduce((a, b) => votes[a] > votes[b] ? a : b);
+                document.getElementById("winner-name").innerText = winner;
+                document.getElementById("winner-banner").classList.remove("hidden");
+            }
+        }
+
+        function adminLogin() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            
+            if (username === adminUsername && password === adminPassword) {
+                document.getElementById("vote-results").classList.remove("hidden");
+                alert("Login successful! Viewing results.");
+            } else {
+                alert("Invalid credentials. Access denied.");
+            }
+        }
+    </script>
+</body>
+</html>
+
